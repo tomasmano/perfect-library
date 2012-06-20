@@ -1,4 +1,5 @@
 perfect-library
 ===============
 
-see docs for info (SK version, no english version available)
+- school project
+- see docs for info (only slovak version, no english version available)
