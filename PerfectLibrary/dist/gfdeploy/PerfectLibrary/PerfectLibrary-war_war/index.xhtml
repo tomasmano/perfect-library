@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:head>
+        <title>Perfect Library</title>
+        <link rel="stylesheet" type="text/css" href="resources/default.css" media="screen" />
+    </h:head>
+    <h:body>
+
+<!--        <h:form>
+            <h:outputText value="Insert book title (test input): "/>
+            <h:inputText value="#/{dynamicTable.testInput}"/>
+            <h:commandButton action="#/{dynamicTable.testAction2}" value="FIND"/>
+        </h:form>-->
+
+        <div id="sign" style="float: right">
+            <h:form>  
+
+                <p:growl id="messages"/>  
+
+                <p:splitButton value="#{msg.signIn}" action="#{navigator.goToSignIn()}" update="messages" icon="ui-icon-disk">  
+                    <p:menuitem value="#{msg.register}" action ="#{navigator.goToRegistration()}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>  
+                    <p:separator />  
+                    <p:menuitem value="#{msg.home}" url="faces/index.xhtml" icon="ui-icon-extlink"/>  
+                </p:splitButton>  
+
+            </h:form>  
+        </div>
+        <div id="container">
+
+            <div id="top" align="center">
+                <a href="faces/index.xhtml"><img src="resources/imgs/lib_logo_official.png" alt="logo" longdesc="http://en.wikipedia.org/wiki/Logo"/></a>
+            </div>
+
+
+            <div id="search-box" align="center">
+                <h:form>
+                    <p:panel id="searchPanel" header="#{msg.searchHeader}:">  
+
+                        <p:autoComplete value="#{libDocument.selectedDocument}" id="customPojo" completeMethod="#{libDocument.completeDocument}"  
+                                        var="doc" itemLabel="#{doc.title}" itemValue="#{doc}" converter="documentConverter" forceSelection="true" size="70">  
+                            <p:column>  
+                                <p:graphicImage value="resources/imgs/placeholder.GIF" width="40" height="50"/>  
+                            </p:column>  
+
+                            <p:column>  
+                                #{doc.authors[0].person.firstname} #{doc.authors[0].person.surname} #{doc.authors[1].person.firstname} #{doc.authors[1].person.surname}: "#{doc.title}"
+                            </p:column>  
+                            <h:inputHidden id="searchInput" value="#{libDocument.selectedDocument}"/>
+                            <!-- 
+                            TODO
+                            
+                            why following code doesnt work?
+                            <p:dataTable var="author" value="#!{doc.authors}">
+                                <p:column>
+                                    <h:outputText value="#!{author.person.surname}"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            the code cause a exception:
+                            javax.el.PropertyNotFoundException: /index.xhtml @31,74 value="#!{doc.authors}": Target Unreachable, identifier 'doc' resolved to null
+                            -->
+
+                        </p:autoComplete>  
+                        <p:separator style="margin-top:20px"/>  
+
+                        <p:commandButton action="#{libDocument.showDedicatedPage()}" value="#{msg.searchButtonTitle}" id="submit" style="margin:10px 0"/>  
+                    </p:panel>  
+                </h:form>
+            </div>
+
+            <div id="signin-box">
+
+                <h:form>
+                    <p:panel id="signInPanel" header="#{msg.signInHeader}">
+                        <p:messages id="msgs"/>  
+                        <p:panelGrid columns="3" id="loginPanelGrid" styleClass="zeroBordersTable">  
+
+                            <h:outputLabel for="username" value="#{msg.username}" />  
+                            <p:inputText id="username" value="#{memberAccound.insertedUsername}" required="true"  label="Username" />  
+                            <p:message for="username" id="msgUsername" display="icon"/>  
+
+                            <h:outputLabel for="password" value="#{msg.password}" />  
+                            <p:password id="password" value="#{memberAccound.insertedPassword}" required="true" label="Password" />  
+                            <p:message for="password" id="msgPassword" display="icon"/>  
+
+                            <p:commandButton update="signInPanel" action="#{memberAccound.logUser}" value="#{msg.loginButton}"/>  
+                        </p:panelGrid>  
+                    </p:panel>  
+                </h:form>
+            </div>
+        </div>
+
+    </h:body>
+</html>
+

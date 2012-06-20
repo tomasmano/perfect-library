@@ -1,0 +1,60 @@
+TODO
+
+- glassfish security
+- uncomment error-page element in web.xml for error code 404
+- rozclenit ejb na viacero modulov
+
+DONE
+
+- REST (document details and availabily resources)
+- scheduler 
+- localization
+- JMS (issue, reservation e-mail confirmation)
+- implement library policy with singleton
+- reflection to dynamic table
+- make availabe issue, review, reservation creation and remove
+- Dock in personal page
+- mega menu in personal page
+- document details page
+- autocomplete search in welcome page
+
+FIX
+
+- FIX: values doesnt get updated until next deploy
+- FIX: placing 404.xhtml to ../errorpages doesnt work with mapping error page location
+- FIX: correct spelling in faces-config.xml: "... Accound ..."
+- FIX: jsf localization doesn't work within <title> html tag
+- FIX: navigation with primefaces splitButton component
+- FIX: SLF4J INFO messages as SEVERE in glassfish log
+
+MISS
+
+- cloud from searched words
+- create javadoc
+
+
+DISCUSS
+
+- bookmark pages
+- version control
+- maven and javadoc 
+- spring vs ejb
+
+****
+co by som vylepsil:
+prepracovane logovanie, prepracovane junit testy (= chyba to lebo som chcel hlavne vyskusat JEE technologie), 
+vsetko v xml aj entity (pekne popisane v kapitole XML Mapping files "JPA 2 Mastering"), templates v JSF, AOP programovanie
+
+****
+co som dosiahol:
+
+- singleton scope on EJB = policy provider
+- injection pomocov JNDI lookup v LibraryDocumentConverter
+- anotacie @Asynchronous, TransactionType(SUPPOR, REQUIRED, REQUIRED_NEW...)
+- NoResultException wrapped in EJBException = riesenie vytvorenie vlastnej vynimky
+- rest - xml reprezentacia documentu vratena podla id, xml reprezentacia recenzii documentu podla jeho id a xml reprezentacia uzivatelovych recenzii podla jeho uzivatelskeho mena, alebo celeho mena
+ukazky URI:
+http://localhost:8080/PerfectLibrary-war/resources/document/2
+http://localhost:8080/PerfectLibrary-war/resources/document/review/10
+http://localhost:8080/PerfectLibrary-war/resources/review/Tomas-Mano
+http://localhost:8080/PerfectLibrary-war/resources/review/tommy

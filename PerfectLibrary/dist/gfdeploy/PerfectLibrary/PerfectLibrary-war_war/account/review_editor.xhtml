@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:head>
+        <title>Perfect Library</title>
+        <link rel="stylesheet" type="text/css" href="../resources/default.css" media="screen" />
+    </h:head>
+    <h:body>
+
+        <div id="sign" style="float: right">
+            <h:form>  
+
+                <p:growl id="messages"/>  
+
+                <p:splitButton value="Go back to my account" action="#{navigator.goToAccount}" update="messages" icon="ui-icon-disk">  
+                    <p:menuitem value="Register" action ="#{navigator.goToRegistration}" update="messages" icon="ui-icon-arrowrefresh-1-w"/>  
+                    <p:separator />  
+                    <p:menuitem value="Home" url="../faces/index.xhtml" icon="ui-icon-extlink"/>  
+                </p:splitButton>  
+
+            </h:form>  
+        </div>
+        <div id="container">
+
+            <div id="top" align="center">
+                <a href="faces/index.xhtml"><img src="../resources/imgs/lib_logo_official.png" alt="logo" longdesc="http://en.wikipedia.org/wiki/Logo"/></a>
+            </div>
+            
+            <div id="review-editor-box">
+                <p:panel header="Write your review:">
+                <h:form>
+                    <p:inputTextarea value="#{memberAccound.reviewInputTextArea}" rows="5" cols="50" counter="counter" maxlength="500"       
+                                     counterTemplate="{0} characters remaining." autoResize="true"/>  
+
+                    <h:outputText id="counter" /> 
+                    <p:separator  style="margin-top:15px; margin-bottom:15px"/> 
+                    <p:commandButton value="Save review" action="#{memberAccound.processInsertReviewRequest}" style="float: bottom"/>
+                </h:form>
+                </p:panel>
+            </div>
+        </div>
+
+    </h:body>
+</html>
+

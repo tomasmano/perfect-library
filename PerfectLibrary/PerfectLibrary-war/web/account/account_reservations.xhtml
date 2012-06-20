@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>#{memberAccound.memberAccount.person.firstname} #{memberAccound.memberAccount.person.surname} | Perfect Library</title>
+        <link rel="stylesheet" type="text/css" href="../rscs/default.css" media="screen" />
+    </h:head>
+    <h:body>
+
+        <div id="container">
+
+            <div id="megamenu">
+
+                <h:form>  
+
+                    <!--                <h3>"Welcome #/{memberAccound.memberAccount.person.firstname} #/{memberAccound.memberAccount.person.surname}!"</h3>  -->
+                    <p:megaMenu>  
+                        <p:submenu label="Account" icon="ui-icon-contact">  
+                            <p:column>  
+                                <p:submenu label="Account settings">  
+                                    <p:menuitem value="Overview" action="#{navigator.goToIssues}" />  
+                                    <p:menuitem value="My issues" action="#{navigator.goToIssues}" />  
+                                    <p:menuitem value="My alerts" action="#{navigator.goToAlerts}" />  
+                                    <p:menuitem value="My reservations" action="#{navigator.goToReservations}" />  
+                                </p:submenu>  
+                            </p:column>  
+                            <p:column>  
+                                <strong>#{memberAccound.memberAccount.person.firstname}'s account</strong>  
+                                <p:graphicImage value="../rscs/imgs/gone.jpg" width="200"/>  
+                            </p:column>  
+                        </p:submenu>  
+
+                        <p:submenu label="Issues">  
+
+                            <p:column>  
+                                <p:submenu label="Issues">  
+                                    <p:menuitem value="overview" action="#{navigator.goToIssues}" />  
+                                </p:submenu>  
+                            </p:column>  
+
+                        </p:submenu>  
+
+                        <p:submenu label="Reservations" >  
+                            <p:column>  
+                                <p:submenu label="Reservations">  
+                                    <p:menuitem value="overview" action="#{navigator.goToReservations}" />  
+                                </p:submenu>  
+                            </p:column>  
+                        </p:submenu>  
+
+
+                        <p:submenu label="Reviews">  
+                            <p:column>  
+                                <p:submenu label="Reviews">  
+                                    <p:menuitem value="Overview" action="#{navigator.goToReviews}"/>  
+                                </p:submenu>  
+
+                            </p:column>  
+                        </p:submenu>  
+
+                        <p:menuitem value="Sign out" action="#{memberAccound.doLogout}" icon="ui-icon-close"/>  
+                    </p:megaMenu>  
+
+                    <br /><br />  
+
+
+                </h:form>  
+            </div>
+
+
+            <div id="issues-box">
+                <h1>My Reservations</h1>
+
+                <h:form id="form">  
+
+                    <p:growl id="msgs" showDetail="true" />  
+
+                    <p:dataTable id="reservation" var="reservation" value="#{memberAccound.reservations}" tableStyle="width:auto" emptyMessage="#{memberAccound.memberAccount.person.firstname}, you don't have any reservations.">  
+
+                        <p:column headerText="Reservation id" style="width:100px">  
+                            <h:outputText value="#{reservation.id}" />  
+                        </p:column>  
+
+                        <p:column headerText="Document" style="width:100px">  
+                            <h:outputText value="#{reservation.libraryDocument.title}" />  
+                        </p:column>  
+
+                        <p:column headerText="Author" style="width:100px">  
+                            <p:dataGrid  styleClass="innerTable" var="author" value="#{reservation.libraryDocument.authors}">
+                                <p:column>
+                                    <h:outputText value="#{author.person.firstname}"/>
+                                    <h:outputText value="#{author.person.surname}"/>
+                                </p:column>
+                            </p:dataGrid>
+                        </p:column>  
+                        <p:column headerText="Reserved since" style="width:100px">  
+                            <h:outputText value="#{reservation.since}" />  
+                        </p:column>  
+
+
+                        <p:column headerText="Details" style="width:40px">  
+                            <h:panelGrid columns="3" styleClass="actions" cellpadding="2">  
+                                <p:commandButton id="selectButton" onclick="#{dynamic.setLibraryDocument(issue.item.libraryDocument)}" update=":form:issueDlg" oncomplete="issueDialog.show()" icon="ui-icon-search" title="View">  
+                                    <f:setPropertyActionListener value="#{reservation.libraryDocument}" target="#{selectedDoc}" />  
+                                </p:commandButton>  
+                                <p:commandButton value="Remove" id="removeButton" action="#{memberAccound.processReservationRemoveRequest(reservation)}"/>  
+                            </h:panelGrid>  
+                        </p:column>  
+
+                    </p:dataTable>  
+
+                    <p:dialog header="Issue Detail" widgetVar="issueDialog" resizable="false" id="issueDlg"  
+                              showEffect="fade" hideEffect="explode" modal="true">  
+                        <h:panelGrid id="display" columns="4" cellpadding="4" style="margin:0 auto;">  
+
+
+
+                            <f:facet name="header">  
+                                <p:graphicImage value="../rscs/imgs/placeholder.GIF"/>  
+                            </f:facet>  
+
+                            <h:outputText value="&quot;#{selectedDoc.title}&quot;"/>
+                         
+                        </h:panelGrid>  
+
+                        <h:panelGroup id="smart" binding="#{dynamic.dataTableGroup}" />
+
+                    </p:dialog>  
+
+                </h:form>  
+
+                <div id="quick-search-box" >
+                    <h:form>
+                        <p:panel id="searchPanel" header="Quick library search:">  
+
+                            <p:autoComplete value="#{libDocument.selectedDocument}" id="customPojo" completeMethod="#{libDocument.completeDocument}"  
+                                            var="doc" itemLabel="#{doc.title}" itemValue="#{doc}" converter="documentConverter" forceSelection="true" size="70">  
+                                <p:column>  
+                                    <p:graphicImage value="../rscs/imgs/placeholder.GIF" width="40" height="50"/>  
+                                </p:column>  
+
+                                <p:column>  
+                                    #{doc.authors[0].person.firstname} #{doc.authors[0].person.surname} #{doc.authors[1].person.firstname} #{doc.authors[1].person.surname}: "#{doc.title}"
+                                </p:column>  
+                                <h:inputHidden id="searchInput" value="#{libDocument.selectedDocument}"/>
+                            </p:autoComplete>  
+
+                            <p:commandButton action="#{libDocument.showDedicatedPage()}" value="FIND" id="submit" style="margin: 5px 10px 5px 20px"/>  
+                        </p:panel>  
+                    </h:form>
+                </div>
+
+            </div>
+            <h:form>
+                <p:dock itemWidth="70" proximity="100">  
+                    <p:menuitem  value="Home" icon="/faces/rscs/imgs/home.png" action="#{navigator.goToIssues}"/>  
+                    <p:menuitem  value="Issues" icon="/faces/rscs/imgs/issues.png" action="#{navigator.goToIssues}"/>  
+                    <p:menuitem value="Reservations" icon="/faces/rscs/imgs/button-reservation.png" action="#{navigator.goToReservations}"/>  
+                    <p:menuitem  value="Alerts" icon="/faces/rscs/imgs/alerts.png" action="#{navigator.goToAlerts}"/>  
+                    <p:menuitem value="Reviews" icon="/faces/rscs/imgs/comments.png" action="#{navigator.goToReviews}"/>  
+                    <p:menuitem  value="Sign out" icon="/faces/rscs/imgs/logout.png" action="#{memberAccound.doLogout}"/>  
+                </p:dock> 
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

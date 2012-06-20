@@ -1,0 +1,6 @@
+# go to gmail.com
+
+login=
+edu.perfectlibrary
+pass=
+perfectlibrary

@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <application>
+        <message-bundle>
+            edu.simulation.perfectlibrary.msgs.CustomErrorMessages
+        </message-bundle>
+    </application>
+    
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+            <supported-locale>sk</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>edu.perfectlibrary.msgs.locale</base-name>
+            <var>msg</var>
+        </resource-bundle>
+    </application>
+    
+    <converter>
+        <converter-id>documentConverter</converter-id>
+        <converter-class>edu.perfectlibrary.transfer.utils.LibraryDocumentConverter</converter-class>
+    </converter>
+    
+    <!-- ============= Managed bean definitons ================ -->
+    
+    <managed-bean>
+        <managed-bean-name>dynamic</managed-bean-name>
+        <managed-bean-class>edu.perfectlibrary.transfer.DynamicDatatable</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>memberAccound</managed-bean-name>
+        <managed-bean-class>edu.perfectlibrary.transfer.MemberAccoundTransfer</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>autocompleteDocSearch</managed-bean-name>
+        <managed-bean-class>edu.perfectlibrary.transfer.utils.AutoCompleteLibraryDocumentSearchUtil</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>libDocument</managed-bean-name>
+        <managed-bean-class>edu.perfectlibrary.transfer.LibraryDocumentTransfer</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>navigator</managed-bean-name>
+        <managed-bean-class>edu.perfectlibrary.transfer.utils.NavigationUtil</managed-bean-class>
+    
+        <managed-bean-scope>view</managed-bean-scope></managed-bean>
+    
+    <!-- ============= Navigation Rules ================ -->
+    
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{memberAccound.logUser}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/account/accountmain.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/account/signin.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{memberAccound.logUser}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/account/accountmain.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/documentDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>IssueRequestFAIL</from-outcome>
+            <to-view-id>/documentDetails.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/documentDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>writeReview</from-outcome>
+            <to-view-id>/account/review_editor.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/review_editor.xhtml</from-view-id>
+    </navigation-rule>
+
+    <navigation-rule>
+<!--        <from-view-id>/index.xhtml</from-view-id>-->
+        <from-view-id>/*</from-view-id>
+        <navigation-case>
+            <from-outcome>signin</from-outcome>
+            <to-view-id>/account/signin.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>registration</from-outcome>
+            <to-view-id>/account/registration.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/account/*</from-view-id>
+        <navigation-case>
+            <from-outcome>reservations</from-outcome>
+            <to-view-id>/account/account_reservations.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>issues</from-outcome>
+            <to-view-id>/account/accountmain.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>reviews</from-outcome>
+            <to-view-id>/account/account_reviews.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>alerts</from-outcome>
+            <to-view-id>/account/account_alerts.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>backToAccount</from-outcome>
+            <to-view-id>/account/accountmain.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+</faces-config>

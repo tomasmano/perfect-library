@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>#{libDocument.selectedDocument.title} | Perfect Library</title>
+        <link rel="stylesheet" type="text/css" href="resources/default.css" media="screen" />
+    </h:head>
+    <h:body>
+        <div id="container">
+
+            <div id="top" align="center">
+                <a href="faces/index.xhtml"><img src="resources/imgs/lib_logo_official.png" alt="logo" longdesc="http://en.wikipedia.org/wiki/Logo"/></a>
+            </div>
+
+            <div id="document-box">
+
+                <p:panel header="&quot;#{libDocument.selectedDocument.title}&quot; | Document info">
+                    <table>
+                        <tr>
+                            <td>
+
+                                <p:graphicImage value="resources/imgs/placeholder.GIF" style="margin: 20px" width="300" height="300"/>  
+                            </td>
+                            <td>
+
+
+
+                                <h:outputText value="Title: " style="font-style: italic; font-size: 90%"/>
+                                <h:outputText value="#{libDocument.selectedDocument.title}"/>
+                                <p:separator style="margin-top:10px; margin-bottom:20px"/> 
+
+                                <h:outputText value="Authors: " style="font-style: italic; font-size: 90%"/>
+                                <p:dataGrid styleClass="innerTable" var="author" value="#{libDocument.selectedDocument.authors}" emptyMessage="Authors not known.">
+                                    <p:column>
+                                        <h:outputText value="#{author.person.firstname}"/>
+                                        <h:outputText value="#{author.person.surname}"/>
+                                    </p:column>
+                                </p:dataGrid>
+                                <p:separator style="margin-top:10px; margin-bottom:20px"/> 
+
+                                <h:outputText value="Available items: " style="font-style: italic; font-size: 90%"/>
+                                <h:outputText value="#{libDocument.availabeItemsSize} (#{libDocument.selectedDocument.items.size()})"/>
+                                <p:separator style="margin-top:10px; margin-bottom:20px"/> 
+
+                                <h:outputText value="Genre: " style="font-style: italic; font-size: 90%"/>
+                                <h:outputText value="#{libDocument.selectedDocument.genres}"/>
+                                <p:separator style="margin-top:10px; margin-bottom:20px"/> 
+
+                                <h:outputText value="Publisher: " style="font-style: italic; font-size: 90%"/>
+                                <h:outputText value="#{libDocument.selectedDocument.publisher.name}"/>
+                                <p:separator  style="margin-top:10px; margin-bottom:10px"/> 
+
+                                <p:messages id="msgs"/>
+                                <h:form styleClass="primeFacesForm">
+                                    <p:column headerText="Details" style="width:40px">  
+                                        <h:panelGrid columns="3" styleClass="actions" cellpadding="2">  
+                                            <p:commandButton value="More info" id="selectButton" onclick="#{dynamic.setLibraryDocument(libDocument.selectedDocument)}" update="issueDlg" oncomplete="issueDialog.show()" icon="ui-icon-search" title="View">  
+                                                <f:setPropertyActionListener value="#{libDocument.selectedDocument}" target="#{selectedDoc}" />  
+                                            </p:commandButton>  
+                                            <p:commandButton value="Get Document" id="getDocumentButton" action="#{memberAccound.processIssueRequest(libDocument.selectedDocument)}"/>  
+                                            <p:commandButton value="Write Review" id="writeReviewButton" action="#{navigator.goToWriteReview()}">
+                                                <f:setPropertyActionListener value="#{libDocument.selectedDocument}" target="#{memberAccound.selectedDocument}" />  
+                                            </p:commandButton>  
+                                            <p:message for="getDocumentButton" id="msgsGetDocumentButton"/>  
+                                        </h:panelGrid>  
+                                    </p:column>  
+
+                                    <p:dialog header="Document Details" widgetVar="issueDialog" resizable="false" id="issueDlg"  
+                                              showEffect="fade" hideEffect="explode" modal="true">  
+                                        <h:panelGrid id="display" columns="4" cellpadding="4" style="margin:0 auto;">  
+
+
+
+                                            <f:facet name="header">  
+                                                <p:graphicImage value="resources/imgs/placeholder2_400x400.gif"/>  
+                                            </f:facet>  
+
+                                            <h:outputText value="&quot;#{selectedDoc.title}&quot;"/>
+
+                                        </h:panelGrid>  
+
+                                        <h:panelGroup id="smart" binding="#{dynamic.dataTableGroup}" />
+
+                                    </p:dialog>  
+                                    <p:dialog header="Issue Details" widgetVar="issueDialog" resizable="false" id="completeDlg"  
+                                              showEffect="fade" hideEffect="explode" modal="true">  
+                                        <h:panelGrid id="completePanel" columns="4" cellpadding="4" style="margin:0 auto;">  
+
+
+                                            <!--                                            <h:outputText value="&quot;#/{selectedDoc.title}&quot;"/>-->
+                                            <h:outputText value="completed!"/>
+                                        </h:panelGrid>
+                                    </p:dialog>  
+
+                                </h:form>  
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p:separator style="margin-top:10px; margin-bottom:20px"/> 
+
+                    <h:outputText value="Reviews: " style="font-style: italic; font-size: 90%"/>
+                    <p:dataTable id="reviews" var="review" value="#{libDocument.selectedDocument.reviews}" emptyMessage="There are no users reviews yet.">
+                        <p:column headerText="text" style="width:100px">  
+                            <h:outputText value="#{review.content}" />  
+                        </p:column>  
+                        <p:column headerText="user" style="width:20%">  
+                            <h:outputText value="by &quot;#{review.memberAccount.username}&quot; on #{review.created}" />  
+                        </p:column>  
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </div>
+    </h:body>
+</html>
+
